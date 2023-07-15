@@ -144,27 +144,29 @@ def main():
 
 
 def db_insert(nome, produtos, quantidade, total):
-    cursor = db.conn.cursor()
+    cursor = db.conn.cursor()  # Cria um cursor para executar comandos SQL
+    # Executa o comando SQL para inserir os valores na tabela 'mesha'
     cursor.execute("INSERT INTO mesha (nome, produto, quantidade, total) VALUES(%s, %s, %s, %s)",
                    (nome, ", ".join(produtos), quantidade, total))
-    db.conn.commit()
+    db.conn.commit()  # Confirma a transação no banco de dados
 
 
 def db_SelectAll():
-    cursor = db.conn.cursor()
+    cursor = db.conn.cursor()  # Cria um cursor para executar comandos SQL
     cursor.execute("SELECT * FROM mesha ORDER BY data DESC")
-    rows = cursor.fetchall()
-    all_list = []
+    rows = cursor.fetchall()  # Recupera todos os registros retornados pelo comando SQL
+    all_list = []  # Cria uma lista vazia para armazenar os resultados
 
+    # Percorre cada registro retornado e extrai as colunas 'nome', 'produto', 'quantidade', 'total' e 'data'
     for row in rows:
         nome = row[1]
         produto = row[2]
         quantidade = row[3]
         total = row[4]
         data = row[5]
-        all_list.append((nome, produto, quantidade, total, data))
+        all_list.append((nome, produto, quantidade, total, data))  # Adiciona os valores extraídos à lista
 
-    return all_list
+    return all_list  # Retorna a lista contendo todos os registros selecionados do banco de dados
 
 
 if __name__ == "__main__":
