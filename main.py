@@ -11,6 +11,7 @@ def main():
 
     # Página "Fazer pedido"
     if page_cliente == "Fazer pedido":
+        st.image(logo_image, width=100)
         st.title("Outlet Mesha - Realizar pedido")
 
         # Dicionário com os produtos disponíveis e seus respectivos preços
@@ -50,6 +51,7 @@ def main():
 
     # Página Consultar pedidos
     elif page_cliente == 'Consultar pedidos':
+        st.image(logo_image, width=100)
         st.title("Outlet Mesha - Consultar pedido")
 
         # Obter os pedidos registrados no banco de dados
@@ -66,6 +68,7 @@ def main():
 
     # Página "Relatórios"
     elif page_cliente == "Relatórios":
+        st.image(logo_image, width=100)
         st.title('Outlet Mesha - Relatórios')
 
         # Obter todos os pedidos registrados no banco de dados
@@ -98,8 +101,9 @@ def main():
 
             # Criar gráfico de barras da venda mais alta
             chart = alt.Chart(filtered_data).mark_bar().encode(
-                x='Produto',
-                y='Total'
+                x=alt.X('Produto', title='Produto'),
+                y=alt.Y('Total', title='Total'),
+                tooltip=['Produto', 'Total', 'Nome']
             )
 
             # Exibir o gráfico
@@ -164,4 +168,5 @@ def db_SelectAll():
 
 
 if __name__ == "__main__":
+    logo_image = 'meshalogo.png'
     main()
