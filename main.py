@@ -1,3 +1,4 @@
+import numpy as np
 import streamlit as st
 import service.database as db
 import pandas as pd
@@ -83,7 +84,7 @@ def main():
 
         # Selecionar a métrica desejada
         metrica = st.selectbox("Selecione a métrica",
-                               ["Geral", "Venda mais alta", "Produto mais vendido", "Produto menos vendido"])
+                               ["Geral", "Ranking de clientes", "Ranking por estado", "Produto mais vendido", "Produto menos vendido"])
 
         if metrica == "Geral":
             # Criar o gráfico de barras
@@ -91,26 +92,51 @@ def main():
                 x=alt.X('Data', title='Data'),
                 y=alt.Y('Quantidade', title='Quantidade'),
                 color='Quantidade:Q',
-                tooltip=['Data', 'Quantidade']
+                tooltip=['Data', 'Quantidade', 'Produto']
             )
 
             st.altair_chart(chart, use_container_width=True)
 
-        elif metrica == "Venda mais alta":
-            # Encontrar a venda mais alta
-            venda_mais_alta = df['Total'].max()
+        elif metrica == "Ranking de clientes":
+            # Agrupar os dados por cliente e calcular o total de vendas para cada um
+            total_vendas_por_cliente = df.groupby('Nome')['Total'].sum().reset_index()
 
-            # Filtrar os dados para incluir apenas a venda mais alta
-            filtered_data = df[df['Total'] == venda_mais_alta]
+            # Ordenar os clientes pelo total de vendas em ordem decrescente
+            total_vendas_por_cliente = total_vendas_por_cliente.sort_values('Total', ascending=False)
 
-            # Criar gráfico de barras da venda mais alta
-            chart = alt.Chart(filtered_data).mark_bar().encode(
-                x=alt.X('Produto', title='Produto'),
-                y=alt.Y('Total', title='Total'),
-                tooltip=['Produto', 'Total', 'Nome']
+            # Exibir o ranking de clientes em um gráfico de barras
+            chart = alt.Chart(total_vendas_por_cliente).mark_bar().encode(
+                x='Nome',
+                y='Total',
+                tooltip=['Nome', 'Total']
             )
 
-            # Exibir o gráfico
+            st.altair_chart(chart, use_container_width=True)
+
+        elif metrica == "Ranking por estado":
+
+            # Adicionar coluna de estado aleatório
+            estados = ["SP", "RJ", "MG", "RS", "PR", "SC", "BA", "PE", "CE", "AM"]
+
+            df['Estado'] = np.random.choice(estados, size=len(df))
+
+            # Agrupar os dados por estado e calcular a quantidade total de produtos vendidos para cada estado
+            total_produtos_por_estado = df.groupby('Estado')['Total'].sum().reset_index()
+
+            # Ordenar os estados pela quantidade total de produtos vendidos em ordem decrescente
+            total_produtos_por_estado = total_produtos_por_estado.sort_values('Total', ascending=False)
+
+            # Exibir o ranking por estado em um gráfico de barras
+            chart = alt.Chart(total_produtos_por_estado).mark_bar().encode(
+
+                x='Estado',
+
+                y='Total',
+
+                tooltip=['Estado', 'Total']
+
+            )
+
             st.altair_chart(chart, use_container_width=True)
 
         elif metrica == "Produto mais vendido":
