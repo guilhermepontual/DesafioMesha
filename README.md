@@ -1,6 +1,6 @@
 # Outlet Mesha
 
-Este é um programa de Outlet Mesha que permite aos usuários fazer pedidos, consultar pedidos registrados e visualizar relatórios. O programa é desenvolvido em Python usando a biblioteca Streamlit e se integra a um banco de dados PostgreSQL.
+Este é o programa Outlet Mesha que permite aos usuários fazer pedidos, consultar pedidos registrados e visualizar relatórios. O programa é desenvolvido em Python usando a biblioteca Streamlit e se integra a um banco de dados PostgreSQL.
 
 ## Pré-requisitos
 Antes de executar o programa, certifique-se de ter as seguintes dependências instaladas:
