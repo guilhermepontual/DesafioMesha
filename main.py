@@ -66,6 +66,10 @@ def main():
         # Exibir a tabela com os pedidos
         st.table(df)
 
+        # Adicionar o botão de exportação
+        csv_export = df.to_csv(index=False).encode('utf-8')
+        st.download_button("Exportar como CSV", data=csv_export, file_name='pedidos.csv', mime='text/csv')
+
     # Página "Relatórios"
     elif page_cliente == "Relatórios":
         st.image(logo_image, width=100)
